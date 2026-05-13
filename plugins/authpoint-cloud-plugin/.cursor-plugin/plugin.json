@@ -1,6 +1,6 @@
 {
   "name": "AuthPoint Cloud Plugin",
-  "logo": "authpoint-icon.png",
+  "logo": "assets/logo.png",
   "description": "AuthPoint plugin: Python hexagonal architecture, pytest, SAM/CloudFormation, Jenkins, and code review",
   "version": "1.0.0",
   "author": {

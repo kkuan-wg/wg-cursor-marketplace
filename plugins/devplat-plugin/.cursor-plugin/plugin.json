@@ -1,0 +1,13 @@
+{
+  "name": "DevPlat Plugin",
+  "description": "",
+  "version": "1.0.0",
+  "author": {
+    "name": "WatchGuard Team"
+  },
+  "skills": "skills/",
+  "commands": "commands/",
+  "rules": "rules/",
+  "hooks": "hooks/hooks.json",
+  "keywords": []
+}

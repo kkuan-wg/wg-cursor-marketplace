@@ -1,0 +1,99 @@
+from os import getenv
+
+from configuration.base_config import BaseConfig
+
+FUNCTION_NAME = '{{ service_name }}'
+
+{% if trigger == 'http' %}
+_PREFIX_API_CODE = 'TODO_SET_API_CODE'
+
+API_ERROR_CODES = {
+    'badRequest': {
+        'code': f'{_PREFIX_API_CODE}001',
+        'title': 'bad_request',
+        'detail': 'The request body is missing the required parameters or it has an invalid value',
+        'status': 400
+    },
+    'preconditionFailed': {
+        'code': f'{_PREFIX_API_CODE}002',
+        'title': 'precondition_failed',
+        'detail': 'One or more conditions provided in the request were not met by the server',
+        'status': 412
+    },
+    'internalServerError': {
+        'code': f'{_PREFIX_API_CODE}301',
+        'title': 'server_error',
+        'detail': 'The server encountered an unexpected condition that prevented it from fulfilling the request',
+        'status': 500
+    }
+}
+
+{% endif %}
+class Environment:
+    def __init__(self):
+        self.aws_region = getenv('AWS_REGION')
+
+
+{% if trigger == 'http' %}
+class HttpEventConfig(BaseConfig):
+    # TODO: configure dto_mapping, data_auto_mapping and dto_log_mapping
+    pass
+
+{% elif trigger == 'sqs' %}
+class SqsEventConfig(BaseConfig):
+    # TODO: configure dto_mapping, data_auto_mapping and dto_log_mapping
+    pass
+
+{% elif trigger == 'ddb_stream' %}
+class DdbStreamEventConfig(BaseConfig):
+    # TODO: configure dto_mapping and dto_log_mapping
+    pass
+
+{% endif %}
+{% if 'repository' in ports %}
+class DdbRepositoryConfig(Environment, BaseConfig):
+    def __init__(self):
+        super().__init__()
+        # TODO: set the correct env var name for the table
+        self.table_name = getenv('TODO_TABLE_NAME')
+
+{% endif %}
+{% if 'responder' in ports %}
+class ResponderConfig(BaseConfig):
+    def __init__(self):
+        self.allowed_origin = getenv('WGC_ALLOWED_ORIGIN')
+
+{% endif %}
+{% if 'invoker' in ports %}
+class InvokerConfig(BaseConfig, Environment):
+    def __init__(self):
+        super().__init__()
+        # TODO: set the correct env var name for the invoked function ARN
+        self.function_name = getenv('TODO_INVOKER_ARN')
+        self.source = FUNCTION_NAME
+        self.invocation_type = 'RequestResponse'
+
+{% endif %}
+{% if 'publisher' in ports %}
+class SnsPublisherConfig(BaseConfig):
+    def __init__(self):
+        # TODO: set the correct env var name for the topic ARN
+        self.topic_arn = getenv('TODO_TOPIC_ARN')
+        self.source = FUNCTION_NAME
+        self.aws_region = getenv('AWS_REGION')
+
+{% endif %}
+{% if 'producer' in ports %}
+class SqsProducerConfig(BaseConfig):
+    def __init__(self):
+        # TODO: set the correct env var name for the queue URL
+        self.queue_url = getenv('TODO_QUEUE_URL')
+        self.source = FUNCTION_NAME
+        self.aws_region = getenv('AWS_REGION')
+
+{% endif %}
+{% if 'crypto' in ports %}
+class CryptoConfig(BaseConfig):
+    # TODO: configure decrypt_attribute_name and encrypt_attribute_name
+    pass
+{% endif %}

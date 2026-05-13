@@ -1,0 +1,71 @@
+{% if port == 'repository' %}
+from abc import ABC, abstractmethod
+
+
+class Repository(ABC):
+    # TODO: add abstract methods for this repository
+    # Example:
+    #   @abstractmethod
+    #   def find_by_account_id(self, *, dto: dict) -> dict:
+    #       return NotImplemented
+    pass
+{% elif port == 'responder' %}
+from abc import abstractmethod, ABC
+
+
+class ResponderPort(ABC):
+    # TODO: add abstract methods for this responder
+    # Example:
+    #   @abstractmethod
+    #   def success(self, *, dto: dict) -> dict:
+    #       return NotImplemented
+    pass
+{% elif port == 'invoker' %}
+from abc import abstractmethod, ABC
+
+
+class InvokerPort(ABC):
+    # TODO: add abstract methods for this invoker
+    # Example:
+    #   @abstractmethod
+    #   def invoke(self, *, dto: dict) -> dict:
+    #       return NotImplemented
+    pass
+{% elif port == 'publisher' %}
+from abc import ABC, abstractmethod
+
+
+class PublisherPort(ABC):
+    # TODO: add abstract methods for this publisher
+    # Example:
+    #   @abstractmethod
+    #   def publish(self, *, dto: dict):
+    #       return NotImplemented
+    pass
+{% elif port == 'producer' %}
+from abc import ABC, abstractmethod
+
+
+class ProducerPort(ABC):
+    # TODO: add abstract methods for this producer
+    # Example:
+    #   @abstractmethod
+    #   def produce(self, *, dto: dict):
+    #       return NotImplemented
+    pass
+{% elif port == 'crypto' %}
+from abc import abstractmethod, ABC
+
+
+class CryptoPort(ABC):
+    # TODO: add abstract methods for this crypto port
+    # Example:
+    #   @abstractmethod
+    #   def decrypt_data(self, *, dto: dict) -> dict:
+    #       return NotImplemented
+    #
+    #   @abstractmethod
+    #   def encrypt_data(self, *, dto: dict) -> str:
+    #       return NotImplemented
+    pass
+{% endif %}

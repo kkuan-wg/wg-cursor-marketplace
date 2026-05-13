@@ -1,0 +1,35 @@
+{
+    "name": "WatchGuard Marketplace",
+    "displayName": "WatchGuard Marketplace",
+    "owner": {
+      "name": "WatchGuard Team",
+      "email": "andre.anderi@watchguard.com"
+    },
+    "metadata": {
+      "description": "The WatchGuard Team Marketplace is a shared hub for distributing Cursor agents, skills, rules, etc.",
+      "version": "0.2.0",
+      "pluginRoot": "plugins"
+    },
+    "plugins": [
+      {
+        "name": "AuthPoint Cloud Plugin",
+        "source": "authpoint-cloud-plugin",
+        "description": "Agents, skills, and MCP tools for AuthPoint Cloud backend development — Python and Java (Spring) with hexagonal architecture, Spec-Driven Development (SDD), and SAM/CloudFormation infrastructure."
+      },
+      {
+        "name": "AuthPoint On-Premises Plugin",
+        "source": "authpoint-on-prem-plugin",
+        "description": "Agents, skills, and tools for AuthPoint on-premises development — Java, C++, and Qt for desktop and client side applications."
+      },
+      {
+        "name": "DevPlat Plugin",
+        "source": "devplat-plugin",
+        "description": "DevPlat description"
+      },
+      {
+        "name": "WG SDD Starter Kit",
+        "source": "wg-sdd-starter-kit-plugin",
+        "description": "wg-sdd-starter-kit description"
+      }
+    ]
+  }

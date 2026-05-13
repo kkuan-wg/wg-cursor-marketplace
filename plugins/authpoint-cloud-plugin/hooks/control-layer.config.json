@@ -1,0 +1,14 @@
+{
+  "subagentMatchers": [
+    "ssot-spec-writer",
+    "ssot-doc-writer",
+    "ssot-test-plan-writer",
+    "flk-ssot-plan-writer",
+    "flk-ops-writer",
+    "flk-code-writer",
+    "flk-unit-test-writer",
+    "flk-auto-integration-test-writer",
+    "flk-code-reviewer",
+    "flk-unit-test-writer"
+  ]
+}

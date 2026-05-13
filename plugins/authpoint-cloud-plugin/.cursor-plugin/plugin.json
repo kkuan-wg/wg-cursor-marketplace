@@ -1,0 +1,38 @@
+{
+  "name": "AuthPoint Cloud Plugin",
+  "description": "AuthPoint plugin: Python hexagonal architecture, pytest, SAM/CloudFormation, Jenkins, and code review",
+  "version": "1.0.0",
+  "author": {
+    "name": "AuthPoint Team"
+  },
+  "skills": "skills/",
+  "commands": "commands/",
+  "rules": "rules/",
+  "hooks": "hooks/hooks.json",
+  "keywords": [
+    "python",
+    "hexagonal-architecture",
+    "ports-and-adapters",
+    "folklore",
+    "authpoint-lambda-layer",
+    "folklore-lambda-layer",
+    "pytest",
+    "testing",
+    "unit-tests",
+    "code-review",
+    "pep8",
+    "coverage",
+    "code-analysis",
+    "aws-sam",
+    "cloudformation",
+    "serverless",
+    "aws-lambda",
+    "api-gateway",
+    "sqs",
+    "sns",
+    "dynamodb",
+    "jenkins",
+    "ci-cd",
+    "infrastructure-as-code"
+  ]
+}

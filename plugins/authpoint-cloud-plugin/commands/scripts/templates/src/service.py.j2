@@ -1,0 +1,17 @@
+import logging
+{% for port in ports if port in port_class_map %}
+from {{ module }}.port.{{ port }} import {{ port_class_map[port] }}
+{% endfor %}
+
+
+class Service:
+
+    def __init__(self, *, {% for port in ports if port in port_class_map %}{{ port }}: {{ port_class_map[port] }}{% if not loop.last %}, {% endif %}{% endfor %}):
+{% for port in ports if port in port_class_map %}
+        self.{{ port }} = {{ port }}
+{% endfor %}
+
+    def process(self, *, dto: dict){% if trigger == 'http' %} -> dict{% endif %}:
+        logging.info(f'Processing DTO {dto}')
+        # TODO: implement business logic
+        raise NotImplementedError

@@ -1,0 +1,28 @@
+{
+  "name": "AuthPoint On-Premises Plugin",
+  "description": "AuthPoint On-Premises plugin: Java, C++, and Qt for desktop and client side applications, with code review, testing, and CI/CD support.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AuthPoint Team"
+  },
+  "skills": "skills/",
+  "commands": "commands/",
+  "rules": "rules/",
+  "hooks": "hooks/hooks.json",
+  "keywords": [
+    "java",
+    "cpp",
+    "c++",
+    "qt",
+    "desktop",
+    "client-side",
+    "on-premises",
+    "authpoint",
+    "testing",
+    "unit-tests",
+    "code-review",
+    "code-analysis",
+    "jenkins",
+    "ci-cd"
+  ]
+}

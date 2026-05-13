@@ -1,0 +1,105 @@
+{% if port == 'repository' %}
+from adapter.data_processing.template_parser import TemplateParser
+from adapter.datasource.ddb_repository import DdbRepository
+
+from {{ module }}.configuration import DdbRepositoryConfig
+from {{ module }}.port.repository import Repository
+
+
+class DdbRepositoryAdapter(Repository):
+
+    def __init__(self, *, config: DdbRepositoryConfig, template_parser: TemplateParser):
+        self.repository = DdbRepository(config=config.as_dict, template_parser=template_parser)
+
+    # TODO: add methods matching the Repository port
+    # Example:
+    #   def find_by_account_id(self, *, dto: dict) -> dict:
+    #       return self.repository.get_item(dto=dto)
+{% elif port == 'responder' %}
+from adapter.transport.http_responder import HttpResponder as LayerHttpResponder
+
+from {{ module }}.configuration import API_ERROR_CODES, ResponderConfig
+from {{ module }}.port.responder import ResponderPort
+
+
+class HttpResponderAdapter(ResponderPort):
+
+    def __init__(self, *, config: ResponderConfig):
+        self.responder = LayerHttpResponder(config=config.as_dict, error_codes=API_ERROR_CODES)
+
+    # TODO: add methods matching the ResponderPort port
+    # Example:
+    #   def success(self, *, dto: dict) -> dict:
+    #       return self.responder.success(dto=dto)
+{% elif port == 'invoker' %}
+from adapter.data_processing.template_parser import TemplateParser
+from adapter.transport.lambda_invoker import LambdaInvoker
+
+from {{ module }}.configuration import InvokerConfig
+from {{ module }}.port.invoker import InvokerPort
+
+
+class LambdaInvokerAdapter(InvokerPort):
+
+    def __init__(self, *, config: InvokerConfig, template_parser: TemplateParser):
+        self.invoker = LambdaInvoker(config=config.as_dict, template_parser=template_parser)
+
+    # TODO: add methods matching the InvokerPort port
+    # Example:
+    #   def invoke(self, *, dto: dict) -> dict:
+    #       return self.invoker.invoke(dto=dto)
+{% elif port == 'publisher' %}
+from adapter.data_processing.template_parser import TemplateParser
+from adapter.transport.sns_publisher import SnsPublisher as LayerSnsPublisher
+
+from {{ module }}.configuration import SnsPublisherConfig
+from {{ module }}.port.publisher import PublisherPort
+
+
+class SnsPublisher(PublisherPort):
+
+    def __init__(self, *, config: SnsPublisherConfig, template_parser: TemplateParser):
+        self.publisher = LayerSnsPublisher(config=config.as_dict, template_parser=template_parser)
+
+    # TODO: add methods matching the PublisherPort port
+    # Example:
+    #   def publish(self, *, dto: dict):
+    #       self.publisher.publish(dto=dto)
+{% elif port == 'producer' %}
+from adapter.data_processing.template_parser import TemplateParser
+from adapter.transport.sqs_producer import SqsProducer as LayerSqsProducer
+
+from {{ module }}.configuration import SqsProducerConfig
+from {{ module }}.port.producer import ProducerPort
+
+
+class SqsProducer(ProducerPort):
+
+    def __init__(self, *, config: SqsProducerConfig, template_parser: TemplateParser):
+        self.producer = LayerSqsProducer(config=config.as_dict, template_parser=template_parser)
+
+    # TODO: add methods matching the ProducerPort port
+    # Example:
+    #   def produce(self, *, dto: dict):
+    #       self.producer.produce(dto=dto)
+{% elif port == 'crypto' %}
+from adapter.data_processing.template_parser import TemplateParser
+from adapter.security.comm_crypto import CommCrypto as LayerCommCrypto
+
+from {{ module }}.configuration import CryptoConfig
+from {{ module }}.port.crypto import CryptoPort
+
+
+class CommCrypto(CryptoPort):
+
+    def __init__(self, *, config: CryptoConfig, template_parser: TemplateParser):
+        self.crypto = LayerCommCrypto(config=config.as_dict, template_parser=template_parser)
+
+    # TODO: add methods matching the CryptoPort port
+    # Example:
+    #   def decrypt_data(self, *, dto: dict) -> dict:
+    #       return self.crypto.decrypt_data(dto=dto)
+    #
+    #   def encrypt_data(self, *, dto: dict) -> str:
+    #       return self.crypto.encrypt_data(dto=dto)
+{% endif %}

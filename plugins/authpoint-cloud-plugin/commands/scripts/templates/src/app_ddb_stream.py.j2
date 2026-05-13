@@ -1,0 +1,39 @@
+import logging
+from traceback import format_exc
+
+from adapter.data_processing.template_parser import TemplateParser
+from adapter.event.ddb_stream_event import DdbStreamEvent
+from configuration.logger import initialize_logging_session, set_context, reset_logging_context
+{% for port in ports if port in adapter_class_map %}
+from {{ module }}.adapter.{{ adapter_class_map[port].file }} import {{ adapter_class_map[port].cls }}
+{% endfor %}
+from {{ module }}.configuration import FUNCTION_NAME, DdbStreamEventConfig{% for port in ports if port in config_class_map %}, {{ config_class_map[port] }}{% endfor %}
+
+from {{ module }}.domain.service import Service
+
+initialize_logging_session(service_name=FUNCTION_NAME)
+
+parser = TemplateParser()
+{% for port in ports if port in adapter_class_map %}
+{% if port in adapter_needs_parser %}
+{{ port }} = {{ adapter_class_map[port].cls }}(config={{ config_class_map[port] }}(), template_parser=parser)
+{% else %}
+{{ port }} = {{ adapter_class_map[port].cls }}(config={{ config_class_map[port] }}())
+{% endif %}
+{% endfor %}
+ddb_stream_event = DdbStreamEvent(config=DdbStreamEventConfig().as_dict, template_parser=parser)
+service = Service({% for port in ports if port in adapter_class_map %}{{ port }}={{ port }}{% if not loop.last %}, {% endif %}{% endfor %})
+
+
+def lambda_handler(event: dict, _context):
+    logging.debug(f'Event received: {event}')
+    try:
+        dto = ddb_stream_event.as_dto(event=event)
+        set_context(dto=dto)
+        service.process(dto=dto)
+        logging.info(f'Successfully executed {FUNCTION_NAME} function.')
+    except Exception as ex:
+        logging.error(f'Failed due to Exception: {ex} with Traceback: {format_exc()}')
+        raise ex
+    finally:
+        reset_logging_context()

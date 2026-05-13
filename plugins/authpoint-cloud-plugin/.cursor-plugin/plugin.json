@@ -5,10 +5,12 @@
   "author": {
     "name": "AuthPoint Team"
   },
+  "agents": "agents/",
   "skills": "skills/",
   "commands": "commands/",
   "rules": "rules/",
   "hooks": "hooks/hooks.json",
+  "mcp": "mcp/server.py",
   "keywords": [
     "python",
     "hexagonal-architecture",

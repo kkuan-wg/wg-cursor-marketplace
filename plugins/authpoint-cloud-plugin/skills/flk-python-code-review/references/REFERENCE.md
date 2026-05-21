@@ -93,11 +93,9 @@ Apply this rule:
 - If the reviewed code calls `validate_required_fields` (or an equivalent required-field validator) before any persistence/DynamoDB writes, downgrade “missing schema validation” findings to `NOT_APPLICABLE` or `LOW` and explain which validation exists.
 - Only raise “schema validation not met” when you find evidence of writes/persistence occurring without even the required-field validation path.
 
-### 4.6 Batch/multi-record handling (“Records” iteration)
-AWS event batch correctness depends on the trigger type.
-Apply this rule:
-- Only flag “no per-Records iteration” when the reviewed code slice clearly parses an event batch (e.g., event adapter reads `event["Records"]` / `Records` and builds a per-record DTO loop, or the spec explicitly requires batch behavior).
-- If the reviewed code builds a DTO from a single message/object (and does not consume other records) and the code/config indicates this is single-message by design, mark the batch-related finding as `NOT_APPLICABLE` (or `LOW` with a question about trigger configuration).
+### 4.6 SQS event batch size (“Records” size 1)
+Consider that for Lambdas that process SQS queue events, Folklore convention enforces an SQS event source mapping batch size of `1`.
+- Do not require per-`Records` iteration; treat `event["Records"]` as a single-element list.
 
 ### 4.8 PATCH semantics (merge vs replace)
 Only treat merge-vs-replace as a finding when the provided spec explicitly defines patch/merge semantics.

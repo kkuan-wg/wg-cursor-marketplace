@@ -159,10 +159,7 @@ FlkLogonAppTxSubscription:
       event_type:
         - "LOGON_APP_TX_CREATED"
         - "LOGON_APP_TX_UPDATED"
-    RawMessageDelivery: true
 ```
-
-> `RawMessageDelivery: true` — the Lambda receives the raw SNS message body, not the SNS envelope.
 
 ---
 

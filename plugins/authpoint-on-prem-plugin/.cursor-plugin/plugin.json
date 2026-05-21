@@ -1,5 +1,5 @@
 {
-  "name": "AuthPoint On-Premises Plugin",
+  "name": "authpoint-on-premises-plugin",
   "logo": "assets/logo.png",
   "description": "AuthPoint On-Premises plugin: Java, C++, and Qt for desktop and client side applications, with code review, testing, and CI/CD support.",
   "version": "1.0.0",

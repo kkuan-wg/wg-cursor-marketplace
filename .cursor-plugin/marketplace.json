@@ -1,5 +1,5 @@
 {
-    "name": "WatchGuard Marketplace",
+    "name": "watchguard-marketplace",
     "displayName": "WatchGuard Marketplace",
     "owner": {
       "name": "WatchGuard Team",
@@ -12,22 +12,22 @@
     },
     "plugins": [
       {
-        "name": "AuthPoint Cloud Plugin",
+        "name": "authpoint-cloud-plugin",
         "source": "authpoint-cloud-plugin",
         "description": "Agents, skills, and MCP tools for AuthPoint Cloud backend development — Python and Java (Spring) with hexagonal architecture, Spec-Driven Development (SDD), and SAM/CloudFormation infrastructure."
       },
       {
-        "name": "AuthPoint On-Premises Plugin",
+        "name": "authpoint-on-premises-plugin",
         "source": "authpoint-on-prem-plugin",
         "description": "Agents, skills, and tools for AuthPoint on-premises development — Java, C++, and Qt for desktop and client side applications."
       },
       {
-        "name": "DevPlat Plugin",
+        "name": "devplat-plugin",
         "source": "devplat-plugin",
         "description": "DevPlat description"
       },
       {
-        "name": "WG SDD Starter Kit",
+        "name": "wg-sdd-starter-kit",
         "source": "wg-sdd-starter-kit-plugin",
         "description": "wg-sdd-starter-kit description"
       }

@@ -13,21 +13,25 @@
     "plugins": [
       {
         "name": "authpoint-cloud-plugin",
+        "displayName": "AuthPoint Cloud Plugin",
         "source": "authpoint-cloud-plugin",
         "description": "Agents, skills, and MCP tools for AuthPoint Cloud backend development — Python and Java (Spring) with hexagonal architecture, Spec-Driven Development (SDD), and SAM/CloudFormation infrastructure."
       },
       {
         "name": "authpoint-on-premises-plugin",
+        "displayName": "AuthPoint On-Premises Plugin",
         "source": "authpoint-on-prem-plugin",
         "description": "Agents, skills, and tools for AuthPoint on-premises development — Java, C++, and Qt for desktop and client side applications."
       },
       {
         "name": "devplat-plugin",
+        "displayName": "DevPlat Plugin",
         "source": "devplat-plugin",
         "description": "DevPlat description"
       },
       {
         "name": "wg-sdd-starter-kit",
+        "displayName": "WG SDD Starter Kit",
         "source": "wg-sdd-starter-kit-plugin",
         "description": "wg-sdd-starter-kit description"
       }

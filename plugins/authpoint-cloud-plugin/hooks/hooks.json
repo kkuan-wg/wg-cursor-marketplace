@@ -1,11 +1,11 @@
 {
   "version": 1,
   "hooks": {
-    "beforeSubmitPrompt": [{ "command": "uv run --script hooks/scripts/control_layer_before_submit_prompt.py" }],
-    "subagentStart":      [{ "command": "uv run --script hooks/scripts/control_layer_subagent_start.py" }],
-    "subagentStop":       [{ "command": "uv run --script hooks/scripts/control_layer_subagent_stop.py" }],
-    "afterFileEdit":      [{ "command": "uv run --script hooks/scripts/control_layer_after_file_edit.py" }],
-    "stop":               [{ "command": "uv run --script hooks/scripts/control_layer_stop.py" }],
-    "sessionStart":       [{ "command": "uv run --script hooks/scripts/control_layer_session_start.py" }]
+    "beforeSubmitPrompt": [{ "command": "uv run --script ${CURSOR_PLUGIN_ROOT}/hooks/scripts/control_layer_before_submit_prompt.py" }],
+    "subagentStart":      [{ "command": "uv run --script ${CURSOR_PLUGIN_ROOT}/hooks/scripts/control_layer_subagent_start.py" }],
+    "subagentStop":       [{ "command": "uv run --script ${CURSOR_PLUGIN_ROOT}/hooks/scripts/control_layer_subagent_stop.py" }],
+    "afterFileEdit":      [{ "command": "uv run --script ${CURSOR_PLUGIN_ROOT}/hooks/scripts/control_layer_after_file_edit.py" }],
+    "stop":               [{ "command": "uv run --script ${CURSOR_PLUGIN_ROOT}/hooks/scripts/control_layer_stop.py" }],
+    "sessionStart":       [{ "command": "uv run --script ${CURSOR_PLUGIN_ROOT}/hooks/scripts/control_layer_session_start.py" }]
   }
 }

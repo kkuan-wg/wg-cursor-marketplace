@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "authpoint-aws-sso": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--script",
+        "${CURSOR_PLUGIN_ROOT}/mcp/aws_sso_server.py"
+      ]
+    }
+  }
+}

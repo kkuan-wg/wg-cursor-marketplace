@@ -14,7 +14,10 @@
         "run",
         "--script",
         "${CURSOR_PLUGIN_ROOT}/mcp/authpoint_spec_server.py"
-      ]
+      ],
+      "env": {
+        "AUTHPOINT_SPEC_REPO": "${env:AUTHPOINT_SPEC_REPO}"
+      }
     }
   }
 }

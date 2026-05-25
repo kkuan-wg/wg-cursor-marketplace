@@ -37,12 +37,13 @@ def _get_repo_root() -> Path:
         raise RuntimeError(
             "AUTHPOINT_SPEC_REPO environment variable is not set. "
             "Point it to the root of your local ai-tool-authpoint-spec clone.\n\n"
-            "  Windows (PowerShell profile):\n"
-            '    $env:AUTHPOINT_SPEC_REPO = "C:\\Users\\<you>\\Projects\\ai-tool-authpoint-spec"\n'
-            "    # To persist: add the line above to $PROFILE\n\n"
-            "  macOS / Linux (~/.zshrc or ~/.bashrc):\n"
-            '    export AUTHPOINT_SPEC_REPO="$HOME/Projects/ai-tool-authpoint-spec"\n'
-            "    # Then run: source ~/.zshrc"
+            "  Windows (PowerShell — persists across reboots):\n"
+            '    [System.Environment]::SetEnvironmentVariable("AUTHPOINT_SPEC_REPO", "$env:USERPROFILE\\path-to-your-repo\\ai-tool-authpoint-spec", "User")\n\n'
+            "  macOS (launchctl — required so GUI apps like Cursor inherit the variable):\n"
+            '    launchctl setenv AUTHPOINT_SPEC_REPO "$HOME/path-to-your-repo/ai-tool-authpoint-spec"\n'
+            "    # Add to ~/.zshrc too for terminal sessions:\n"
+            '    echo \'export AUTHPOINT_SPEC_REPO="$HOME/path-to-your-repo/ai-tool-authpoint-spec"\' >> ~/.zshrc\n\n'
+            "  After setting, restart Cursor."
         )
     path = Path(raw)
     if not path.is_dir():

@@ -114,9 +114,9 @@ def main() -> None:
         if model and model != existing.get("model", ""):
             existing["model"] = model
             changed = True
-        slash_match = SLASH_COMMAND_RE.search(prompt)
-        if slash_match:
-            new_invoked = slash_match.group(1)
+        slash_matches = SLASH_COMMAND_RE.findall(prompt)
+        if slash_matches:
+            new_invoked = ",".join(slash_matches)
             if new_invoked != existing.get("invoked_subagent", ""):
                 existing["invoked_subagent"] = new_invoked
                 changed = True
@@ -140,7 +140,7 @@ def main() -> None:
         )
 
     spec_id = spec_match.group(1).strip()
-    invoked_subagent = SLASH_COMMAND_RE.search(prompt).group(1)
+    invoked_subagent = ",".join(SLASH_COMMAND_RE.findall(prompt))
     now = datetime.now(timezone.utc).isoformat()
 
     index[conversation_id] = {

@@ -7,6 +7,14 @@
         "--script",
         "${CURSOR_PLUGIN_ROOT}/mcp/aws_sso_server.py"
       ]
+    },
+    "authpoint-spec": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--script",
+        "${CURSOR_PLUGIN_ROOT}/mcp/authpoint_spec_server.py"
+      ]
     }
   }
 }

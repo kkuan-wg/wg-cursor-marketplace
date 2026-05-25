@@ -1,6 +1,7 @@
 {
   "name": "wg-sdd-starter-kit",
   "displayName": "WG SDD Starter Kit",
+  "logo": "assets/sample_logo.png",
   "description": "",
   "version": "1.0.0",
   "author": {

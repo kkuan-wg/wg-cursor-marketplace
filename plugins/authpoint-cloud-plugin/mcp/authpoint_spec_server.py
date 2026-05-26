@@ -22,6 +22,7 @@ root of a local clone of the ai-tool-authpoint-spec repository.
 import logging
 import os
 import subprocess
+import threading
 from pathlib import Path
 from typing import Optional
 
@@ -73,7 +74,7 @@ _FOLDER_ALIASES: dict[str, list[str]] = {
     "examples":     ["examples", "example"],
 }
 
-_last_pull_status: str = "refresh() not called yet"
+_last_pull_status: dict = {"status": "not_called", "message": "refresh() not called yet"}
 
 mcp = FastMCP("ai-tool-authpoint-spec")
 
@@ -83,34 +84,126 @@ mcp = FastMCP("ai-tool-authpoint-spec")
 # ---------------------------------------------------------------------------
 
 
-def _git_pull() -> str:
-    if not (_REPO_ROOT / ".git").exists():
-        msg = f"Not a git repository, skipping pull: {_REPO_ROOT}"
-        logger.warning(msg)
-        return msg
+def _git_is_dirty() -> bool:
     try:
         result = subprocess.run(
-            ["git", "pull", "--ff-only"],
+            ["git", "status", "--porcelain"],
             cwd=_REPO_ROOT,
             capture_output=True,
             text=True,
-            timeout=15,
+            timeout=5,
+        )
+        return result.returncode == 0 and bool(result.stdout.strip())
+    except Exception:
+        return False
+
+
+def _git_current_branch() -> str:
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+            cwd=_REPO_ROOT,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        return result.stdout.strip() if result.returncode == 0 else "unknown"
+    except Exception:
+        return "unknown"
+
+
+def _git_pull() -> dict:
+    if not (_REPO_ROOT / ".git").exists():
+        msg = f"Not a git repository, skipping pull: {_REPO_ROOT}"
+        logger.warning(msg)
+        return {"status": "no_git", "message": msg}
+
+    branch = _git_current_branch()
+
+    if branch != "dev":
+        if _git_is_dirty():
+            msg = (
+                f"Uncommitted changes detected on '{branch}'. "
+                "Staying on this branch — specs may differ from dev."
+            )
+            logger.warning(msg)
+            return {
+                "status": "failed",
+                "message": msg,
+                "branch": branch,
+                "warning": msg,
+            }
+        try:
+            checkout = subprocess.run(
+                ["git", "checkout", "dev"],
+                cwd=_REPO_ROOT,
+                capture_output=True,
+                text=True,
+                timeout=10,
+            )
+            if checkout.returncode != 0:
+                detail = checkout.stderr.strip() or checkout.stdout.strip() or "no output"
+                msg = f"git checkout dev failed (exit {checkout.returncode}): {detail}"
+                logger.warning(msg)
+                return {
+                    "status": "failed",
+                    "message": msg,
+                    "branch": branch,
+                    "warning": "Could not switch to dev. Specs may differ from dev.",
+                }
+            previous_branch = branch
+            branch = "dev"
+            logger.info("Switched from '%s' to dev.", previous_branch)
+        except subprocess.TimeoutExpired:
+            msg = "git checkout dev timed out."
+            logger.warning(msg)
+            return {
+                "status": "failed",
+                "message": msg,
+                "branch": branch,
+                "warning": "Could not switch to dev. Specs may differ from dev.",
+            }
+        except FileNotFoundError:
+            msg = "git not found in PATH, skipping pull."
+            logger.warning(msg)
+            return {"status": "no_git", "message": msg}
+
+    try:
+        result = subprocess.run(
+            ["git", "pull"],
+            cwd=_REPO_ROOT,
+            capture_output=True,
+            text=True,
+            timeout=30,
         )
         if result.returncode == 0:
             msg = result.stdout.strip() or "Already up to date."
             logger.info("git pull: %s", msg)
-            return msg
-        msg = f"git pull failed: {result.stderr.strip()}"
+            return {"status": "ok", "message": msg, "branch": branch}
+        stderr = result.stderr.strip()
+        stdout = result.stdout.strip()
+        detail = stderr or stdout or "no output from git"
+        msg = f"git pull failed (exit {result.returncode}): {detail}"
         logger.warning(msg)
-        return msg
+        return {
+            "status": "failed",
+            "message": msg,
+            "branch": branch,
+            "warning": "Specs may be outdated. Working with local files.",
+        }
     except subprocess.TimeoutExpired:
-        msg = "git pull timed out, continuing with local files."
+        msg = "git pull timed out after 30s."
         logger.warning(msg)
-        return msg
+        return {
+            "status": "timeout",
+            "message": msg,
+            "branch": branch,
+            "warning": "Specs may be outdated. Working with local files.",
+        }
     except FileNotFoundError:
         msg = "git not found in PATH, skipping pull."
         logger.warning(msg)
-        return msg
+        return {"status": "no_git", "message": msg}
 
 
 def _available_roots() -> list[tuple[str, Path]]:
@@ -241,10 +334,17 @@ def _flat_spec_files(domain_path: Path) -> list[dict]:
 
 
 @mcp.tool()
-def refresh() -> str:
+def refresh() -> dict:
     """
     Pull the latest changes from the remote ai-tool-authpoint-spec repository.
     Call this before starting work to ensure specs are up to date.
+
+    Returns a dict with:
+      - status: "ok" | "failed" | "timeout" | "no_git" | "not_called"
+      - message: human-readable description
+      - warning: (only present on failure) explains that local files are being used
+
+    When status is not "ok", specs may be outdated — inform the user before proceeding.
     """
     global _last_pull_status
     _last_pull_status = _git_pull()
@@ -252,12 +352,17 @@ def refresh() -> str:
 
 
 @mcp.tool()
-def get_pull_status() -> str:
+def get_pull_status() -> dict:
     """
     Returns the result of the last git pull attempt.
 
+    Returns a dict with:
+      - status: "ok" | "failed" | "timeout" | "no_git" | "not_called"
+      - message: human-readable description
+      - warning: (only present on failure) explains that local files are being used
+
     Useful to check whether the agent is working with up-to-date specs
-    or a local cache (e.g. pull failed due to conflict or no network).
+    or a local cache (e.g. pull timed out or failed due to no network).
     """
     return _last_pull_status
 
@@ -580,8 +685,11 @@ def search_specs(keyword: str, max_results: int = 10) -> list[dict]:
 
 
 def main() -> None:
-    global _last_pull_status
-    _last_pull_status = _git_pull()
+    def _background_pull() -> None:
+        global _last_pull_status
+        _last_pull_status = _git_pull()
+
+    threading.Thread(target=_background_pull, daemon=True).start()
     mcp.run(transport="stdio")
 
 

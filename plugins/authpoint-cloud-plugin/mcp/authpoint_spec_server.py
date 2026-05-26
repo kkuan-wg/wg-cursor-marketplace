@@ -84,6 +84,18 @@ mcp = FastMCP("ai-tool-authpoint-spec")
 # ---------------------------------------------------------------------------
 
 
+_GIT_ENV = {
+    **os.environ,
+    # Prevent any interactive credential prompt from blocking the MCP process.
+    # The repo uses HTTPS + Git Credential Manager; without these flags GCM opens
+    # a UI window that never resolves inside a stdio subprocess.
+    "GIT_TERMINAL_PROMPT": "0",   # git: never prompt in terminal
+    "GIT_ASKPASS": "echo",        # redirect any askpass to a no-op
+    "GCM_INTERACTIVE": "never",   # Git Credential Manager: headless only
+    "GCM_GUI_PROMPT": "false",    # GCM: suppress GUI prompt
+}
+
+
 def _git_is_dirty() -> bool:
     try:
         result = subprocess.run(
@@ -92,6 +104,7 @@ def _git_is_dirty() -> bool:
             capture_output=True,
             text=True,
             timeout=5,
+            env=_GIT_ENV,
         )
         return result.returncode == 0 and bool(result.stdout.strip())
     except Exception:
@@ -106,6 +119,7 @@ def _git_current_branch() -> str:
             capture_output=True,
             text=True,
             timeout=5,
+            env=_GIT_ENV,
         )
         return result.stdout.strip() if result.returncode == 0 else "unknown"
     except Exception:
@@ -140,6 +154,7 @@ def _git_pull() -> dict:
                 capture_output=True,
                 text=True,
                 timeout=10,
+                env=_GIT_ENV,
             )
             if checkout.returncode != 0:
                 detail = checkout.stderr.strip() or checkout.stdout.strip() or "no output"
@@ -175,6 +190,7 @@ def _git_pull() -> dict:
             capture_output=True,
             text=True,
             timeout=30,
+            env=_GIT_ENV,
         )
         if result.returncode == 0:
             msg = result.stdout.strip() or "Already up to date."

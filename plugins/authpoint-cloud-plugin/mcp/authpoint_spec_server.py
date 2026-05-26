@@ -22,7 +22,6 @@ root of a local clone of the ai-tool-authpoint-spec repository.
 import logging
 import os
 import subprocess
-import threading
 from pathlib import Path
 from typing import Optional
 
@@ -189,7 +188,7 @@ def _git_pull() -> dict:
             cwd=_REPO_ROOT,
             capture_output=True,
             text=True,
-            timeout=30,
+            timeout=20,
             env=_GIT_ENV,
         )
         if result.returncode == 0:
@@ -701,11 +700,8 @@ def search_specs(keyword: str, max_results: int = 10) -> list[dict]:
 
 
 def main() -> None:
-    def _background_pull() -> None:
-        global _last_pull_status
-        _last_pull_status = _git_pull()
-
-    threading.Thread(target=_background_pull, daemon=True).start()
+    global _last_pull_status
+    _last_pull_status = _git_pull()
     mcp.run(transport="stdio")
 
 

@@ -207,7 +207,7 @@ def _git_pull() -> dict:
             "warning": "Specs may be outdated. Working with local files.",
         }
     except subprocess.TimeoutExpired:
-        msg = "git pull timed out after 30s."
+        msg = "git pull timed out after 20s."
         logger.warning(msg)
         return {
             "status": "timeout",

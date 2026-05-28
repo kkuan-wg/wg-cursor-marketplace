@@ -23,7 +23,7 @@ from datetime import datetime, timezone
 HOOKS_DIR_ENV = "CURSOR_PROJECT_DIR"
 INDEX_SUBPATH = os.path.join(".cursor", "hooks", "spec_index.json")
 
-SPEC_ID_RE = re.compile(r"spec-id:(\S+)")
+SPEC_ID_RE = re.compile(r"spec-id\s*:\s*([A-Za-z0-9][A-Za-z0-9_-]*)")
 
 _SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
 _CONFIG_PATH = os.path.join(_SCRIPTS_DIR, "..", "control-layer.config.json")
@@ -131,6 +131,22 @@ def main() -> None:
         _pass()
 
     if not SLASH_COMMAND_RE.search(prompt):
+        if not spec_match:
+            _pass()
+        spec_id = spec_match.group(1).strip()
+        now = datetime.now(timezone.utc).isoformat()
+        index[conversation_id] = {
+            "spec_id": spec_id,
+            "invoked_subagent": "",
+            "prompt": prompt,
+            "model": model,
+            "user_email": user_email,
+            "registered_at": now,
+            "modified_files": [],
+            "finalized": False,
+            "flk_sdd_finalize_ran": False,
+        }
+        _save_index(index)
         _pass()
 
     if not spec_match:

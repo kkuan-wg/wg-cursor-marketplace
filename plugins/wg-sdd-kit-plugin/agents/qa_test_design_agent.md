@@ -1,3 +1,8 @@
+---
+name: qa-test-design-agent
+model: inherit
+description: Produces formal test design after acceptance criteria are stable — every AC line gets traceable coverage, plus environments, data, negatives, and Definition of Done for QA execution. Use when creating test plans or test scenarios for a story or release.
+---
 
 # Agent: QA Test Design (Angular + Python)
 

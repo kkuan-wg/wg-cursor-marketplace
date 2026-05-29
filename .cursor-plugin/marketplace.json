@@ -30,10 +30,10 @@
         "description": "DevPlat description"
       },
       {
-        "name": "wg-sdd-starter-kit",
-        "displayName": "WG SDD Starter Kit",
-        "source": "wg-sdd-starter-kit-plugin",
-        "description": "wg-sdd-starter-kit description"
+        "name": "wg-sdd-kit-plugin",
+        "displayName": "WG SDD Kit Plugin",
+        "source": "wg-sdd-kit-plugin",
+        "description": "Specs-Driven Development (SDD) plugin: gated workflow (feature spec -> backlog -> plan -> publish), agents for analysis/QA/docs, templates, and Jira/Confluence automation. Stack-agnostic — pair with a stack plugin (e.g. authpoint-cloud-plugin) for coding conventions."
       }
     ]
   }

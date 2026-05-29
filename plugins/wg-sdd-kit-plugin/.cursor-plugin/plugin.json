@@ -1,0 +1,36 @@
+{
+  "name": "wg-sdd-kit-plugin",
+  "displayName": "WG SDD Kit Plugin",
+  "logo": "assets/sample_logo.png",
+  "description": "Specs-Driven Development (SDD) plugin: gated workflow (feature spec -> backlog -> plan -> publish), agents for analysis/QA/docs, templates, and Jira/Confluence automation. Stack-agnostic — pair with a stack plugin (e.g. authpoint-cloud-plugin) for coding conventions.",
+  "version": "1.0.0",
+  "author": {
+    "name": "WGC Platform"
+  },
+  "agents": "agents/",
+  "commands": "commands/",
+  "examples": "examples/",
+  "rules": "rules/",
+  "skills": "skills/",
+  "templates": "templates/",
+  "keywords": [
+    "sdd",
+    "specs-driven-development",
+    "spec-first",
+    "backlog",
+    "user-stories",
+    "gherkin",
+    "acceptance-criteria",
+    "traceability",
+    "requirements",
+    "planning",
+    "jira",
+    "confluence",
+    "qa",
+    "test-design",
+    "feasibility",
+    "devils-advocate",
+    "release-notes",
+    "workflow-orchestration"
+  ]
+}

@@ -2,7 +2,7 @@
   "name": "authpoint-cloud-plugin",
   "logo": "assets/logo.png",
   "displayName": "AuthPoint Cloud Plugin",
-  "description": "AuthPoint plugin: Python hexagonal architecture, pytest, SAM/CloudFormation, Jenkins, and code review",
+  "description": "AuthPoint plugin: Python hexagonal architecture, Java Spring Boot config, pytest, SAM/CloudFormation, Jenkins, and code review",
   "version": "1.0.10",
   "author": {
     "name": "AuthPoint Team"
@@ -37,6 +37,9 @@
     "dynamodb",
     "jenkins",
     "ci-cd",
-    "infrastructure-as-code"
+    "infrastructure-as-code",
+    "java",
+    "spring-boot",
+    "spring"
   ]
 }

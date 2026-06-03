@@ -1,14 +1,21 @@
 # Guardrail Checklist
 
-Apply before creating or modifying each class. Sources: `java-package-map.mdc` (where) + `java-design-patterns.mdc` (how) + `java-spring-properties-injection.mdc` (properties triad).
+Apply before creating or modifying each class.
 
-## Before any implementation (authpt-java-code-impl gate)
+| Origin | Document | Role |
+|--------|----------|------|
+| Target repo `.cursor/rules/` | `java-package-map.mdc` | **where** |
+| Target repo `.cursor/rules/` | `java-design-patterns.mdc` | **how** |
+| **authpoint-cloud-plugin** `rules/` | [`java-spring-properties-injection.mdc`](../../../rules/java-spring-properties-injection.mdc) | **properties triad** |
 
-**Stop** if not done yet:
+## Before any implementation (authpt-java-code-impl Phase 2)
 
-- [ ] Read entirely `~/.cursor/rules/java-spring-properties-injection.mdc`
-- [ ] Read repo `java-package-map.mdc` and `java-design-patterns.mdc`
-- [ ] Skim `.cursor/docs/java-properties-registry.md` when present in the target repo
+**Stop** if Phase 2 is incomplete — read entirely, then apply on every artifact:
+
+- [ ] `.cursor/rules/java-package-map.mdc` (where)
+- [ ] `.cursor/rules/java-design-patterns.mdc` (how)
+- [ ] Plugin [`java-spring-properties-injection.mdc`](../../../rules/java-spring-properties-injection.mdc) (property triad)
+- [ ] Skim `java-properties-registry.md` when present in the target repo
 
 ## Per artifact type
 
@@ -59,7 +66,7 @@ Apply before creating or modifying each class. Sources: `java-package-map.mdc` (
 
 ## Properties triad
 
-Source: `~/.cursor/rules/java-spring-properties-injection.mdc` (always loaded before Phase 6; full checklist below when task touches external config)
+Source: **authpoint-cloud-plugin** [`rules/java-spring-properties-injection.mdc`](../../../rules/java-spring-properties-injection.mdc) — load in Phase 2 (mandatory gate); apply the checklist below when the task touches external config.
 
 - [ ] Key declared in `src/main/resources/application.properties` (cloud + `local.*` mirror if applicable)
 - [ ] `scripts/run.sh` passes `--key=$ENV` on deploy branch when value comes from container

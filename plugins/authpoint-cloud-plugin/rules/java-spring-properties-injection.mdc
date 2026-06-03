@@ -4,7 +4,7 @@ globs: |
   scripts/run.sh,
   **/src/main/resources/application*.properties,
   **/configuration/**/*.java
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Spring property injection — run.sh ↔ application.properties ↔ configuration
@@ -43,8 +43,8 @@ ENV (container) → run.sh (--key=$VAR) → Spring Environment ← application.p
 
 For each SNS/SQS integration, keep a **key pair** with the same semantic suffix:
 
-- Cloud: `amazon.aws.sqs.usermanagement.group.queue.name`
-- Local: `local.amazon.aws.sqs.usermanagement.group.queue.name`
+- Cloud: `amazon.aws.sqs.queue.name`
+- Local: `local.amazon.aws.sqs.queue.name`
 
 Local defaults may repeat the logical queue name; endpoints differ (`local.amazon.aws.sqs.endpoint` vs credentials/region in cloud).
 
@@ -87,7 +87,10 @@ Variables listed in the structured startup log in `run.sh` act as an index of de
 
 ## Detail skills (read when implementing)
 
-- `~/.cursor/skills/spring-boot-application-properties-injection/SKILL.md` — `@Value` and declaration in properties
+Plugin skills under `plugins/authpoint-cloud-plugin/skills/` (relative from this rule: `../skills/`):
 
+- [spring-boot-application-properties-injection](../skills/spring-boot-application-properties-injection/SKILL.md) — `@Value` and declaration in `application.properties`
+- [spring-boot-configuration-classes](../skills/spring-boot-configuration-classes/SKILL.md) — `@Configuration` classes and AWS beans
+- [spring-boot-sns-topic-publisher](../skills/spring-boot-sns-topic-publisher/SKILL.md) — SNS publishers
 
-Per-project registry (optional): `.cursor/docs/java-properties-registry.md` — table ENV → key → Config → consumer.
+Per-project registry (optional): `java-properties-registry.md` — table ENV → key → Config → consumer.

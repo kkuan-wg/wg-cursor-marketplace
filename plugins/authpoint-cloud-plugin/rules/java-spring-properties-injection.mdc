@@ -1,0 +1,96 @@
+---
+description: Triadic guardrail — scripts/run.sh, application.properties and configuration/*Config (Spring injection)
+globs: |
+  scripts/run.sh,
+  **/src/main/resources/application*.properties,
+  **/configuration/**/*.java
+alwaysApply: false
+---
+
+# Spring property injection — run.sh ↔ application.properties ↔ configuration
+
+Complements `spring-boot-application-properties-injection` and `spring-boot-configuration-classes`: defines **where** to declare each key and **how** to keep the three layers aligned in Java Spring Boot projects (AuthPoint middleware and similar).
+
+## Mandatory chain (order of changes)
+
+When introducing or changing an external property (SQS queue, SNS topic, DynamoDB table, datasource, region):
+
+1. **Declare** the key in `src/main/resources/application.properties` (and `application-{profile}.properties` if applicable) with a default value.
+2. If the deploy value comes from an **environment variable**, add `--exact.key=$ENV_VAR` to the container branch of `scripts/run.sh` (or the equivalent startup script).
+3. **Reference** the same literal key in Java: `@Value("${exact.key}")` in `.../configuration/**/*Config.java`, or `${key}` in `@SqsListener` / queue constants.
+4. **Never** hardcode an ARN, queue name, endpoint, or region in `api/`, `cache/`, `publisher/` — use a configuration bean or a property placeholder.
+
+```
+ENV (container) → run.sh (--key=$VAR) → Spring Environment ← application.properties (defaults)
+                                              ↓
+                                    configuration/*Config (@Value, @Bean)
+                                              ↓
+                              cache/*Listener, publisher/*, persistence wiring
+```
+
+## Profiles and prefixes (middleware standard)
+
+| `spring.profiles.active` | `configuration` package | Typical prefix |
+|--------------------------|----------------------|----------------|
+| `dev-local` | `local/` | `local.amazon.aws.*`, `localstack.aws.*` |
+| `dev`, `qa`, `staging`, `prod` | `cloud/` | `amazon.aws.*`, `aws.*` |
+| tests | `test/` | `local.*` / `localstack.*` matching the existing sibling |
+
+- One `@Configuration` class per integration context (`SnsCloudConfig`, `SqsLocalConfig`, `DataSourceConfig`).
+- `@Profile` on cloud/local configs; shared configs use keys without `local.` when `run.sh` injects the value in all environments (e.g. `aws.ddb.umm.table.name.prefix`).
+
+## Cloud ↔ local mirroring
+
+For each SNS/SQS integration, keep a **key pair** with the same semantic suffix:
+
+- Cloud: `amazon.aws.sqs.queue.name`
+- Local: `local.amazon.aws.sqs.queue.name`
+
+Local defaults may repeat the logical queue name; endpoints differ (`local.amazon.aws.sqs.endpoint` vs credentials/region in cloud).
+
+## `run.sh` ↔ property map
+
+**Branch with `ENV_TYPE` defined (deploy):**
+
+- `--spring.profiles.active=$ENV_TYPE` activates `*CloudConfig`.
+- Each `--amazon.aws.*`, `--aws.*`, `--spring.datasource.*` needs a line in `application.properties` and a `@Value` (or consumption via placeholder) in the cloud config or `DataSourceConfig`.
+
+**Branch without `ENV_TYPE` (dev local):**
+
+- Overrides `--localstack.*`, `--local.amazon.aws.*`, `--spring.datasource.*` aligned with `*LocalConfig` / `*TestConfig`.
+
+Variables listed in the structured startup log in `run.sh` act as an index of deploy properties: a new `SQS_*` / `SNS_*` in the log requires a `--key` pair + an entry in `application.properties`.
+
+## Downstream consumption
+
+| Need | Correct form | Anti-pattern |
+|-------------|---------------|-------------|
+| AWS client/topic | Inject `Topic`, `SqsClient`, `DynamoDbTable` from `*Config` | `new SnsClient()` in publisher |
+| Queue in listener | `@SqsListener("${amazon.aws.sqs...}")` or a constant with `${...}` | Literal queue name |
+| Region/credentials | `extends AwsCloudConfig` / `AwsLocalConfig` | Duplicated region `@Value` in each config |
+
+## Checklist (before closing a task)
+
+- [ ] Key in `application.properties` (cloud and local if applicable)
+- [ ] `run.sh` with `--key=$ENV` on deploy, when the value comes from the container
+- [ ] `@Value` / `@SqsListener` with the **same** literal key
+- [ ] Class in `configuration/{cloud|local|test}/` with the correct `@Profile`
+- [ ] Stable `@Bean(name = "...")` if already referenced by `@Qualifier`
+- [ ] Config only does wiring (no business logic)
+
+## Anti-patterns
+
+- Property only in ENV / `run.sh` without a line in `application.properties`
+- `@Value` placeholder differing from the key in `application.properties` or `run.sh`
+- `local.*` in `*CloudConfig` or `amazon.aws.*` in `*LocalConfig`
+- Dozens of `@Value` in publisher/listener instead of config beans
+
+## Detail skills (read when implementing)
+
+Plugin skills under `plugins/authpoint-cloud-plugin/skills/` (relative from this rule: `../skills/`):
+
+- [spring-boot-application-properties-injection](../skills/spring-boot-application-properties-injection/SKILL.md) — `@Value` and declaration in `application.properties`
+- [spring-boot-configuration-classes](../skills/spring-boot-configuration-classes/SKILL.md) — `@Configuration` classes and AWS beans
+- [spring-boot-sns-topic-publisher](../skills/spring-boot-sns-topic-publisher/SKILL.md) — SNS publishers
+
+Per-project registry (optional): `java-properties-registry.md` — table ENV → key → Config → consumer.

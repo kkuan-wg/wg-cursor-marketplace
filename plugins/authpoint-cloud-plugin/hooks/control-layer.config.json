@@ -11,6 +11,7 @@
     "flk-unit-test-writer",
     "flk-auto-integration-test-writer",
     "flk-code-reviewer",
-    "flk-unit-test-writer"
+    "flk-unit-test-writer",
+    "authpt-code-writer"
   ]
 }

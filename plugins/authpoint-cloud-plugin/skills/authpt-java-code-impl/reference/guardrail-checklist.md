@@ -21,29 +21,29 @@ Apply before creating or modifying each class.
 
 | Artifact | Allowed package | Suffix | Must do | Must not |
 |----------|-----------------|--------|---------|----------|
-| REST endpoint | `api/{dominio}/controller` | `*Controller` | Delegate to service; use `ApiConstants` for paths | Business logic; RBAC in controller |
-| API service | `api/{dominio}/service` | `*Service` | Orchestrate validation, persistence, publisher, audit | Direct HTTP concerns |
-| Request validator | `api/{dominio}/service` | `*RequestValidator` | Spring `Validator` + `@InitBinder` | Persistence calls |
-| Data validator | `api/{dominio}/service` | `*DataValidator` | Post-mapping business rules | HTTP binding |
-| DTO builder | `api/{dominio}/service` | `*Builder` | Request ↔ DTO ↔ Entity ↔ Response | Side effects |
-| API DTO | `api/{dominio}/model` | `*Request`, `*Response`, `*Dto` | Lombok POJOs | JPA annotations |
-| API exception | `api/{dominio}/exception` | `*ApiException`, `*ApiError` | Typed errors | Generic RuntimeException |
-| Exception handler | `api/{dominio}/exception` | `*ExceptionHandler` | Extend `BaseExceptionHandler` | Catch-all without domain scope |
-| SQS listener | `cache/{dominio}/` | `*Listener`, `*CacheListener` | `@SqsListener`, MDC, route by event | Business logic (delegate to handler) |
-| SQS parser (inbound) | `cache/{dominio}/` | `*Parser`, `*CacheParser` | JSON → object | Persistence writes |
-| Cache builder | `cache/{dominio}/` | `*Builder`, `*CacheBuilder` | Payload → DTO → entity | Repository calls |
-| Cache handler | `cache/{dominio}/` | `*Handler`, `*CacheHandler` | CRUD via repository; optimistic locking | HTTP or SNS publish orchestration |
-| JPA entity | `persistence/aurora/{dominio}/model` | entity name | `@Entity`, domain methods | Import from `api` or `cache` |
-| JPA repository | `persistence/aurora/{dominio}/repository` | `*Repository` | `extends JpaRepository` | Import from `api` or `cache` |
-| Dynamo entity | `persistence/dynamo/{dominio}/model` | entity name | `@DynamoDBTable` | Import from `api` or `cache` |
-| Dynamo repository | `persistence/dynamo/{dominio}/repository` | `*Repository`, `*RepositoryImpl` | Interface + `@Service` impl | Import from `api` or `cache` |
-| SNS publisher | `publisher/{dominio}/` | `*Publisher` | Build + serialize + publish with retry | Business orchestration |
-| Publisher builder | `publisher/{dominio}/` | `*Builder`, `*PayloadBuilder` | Entity → messaging payload | Repository queries |
-| Publisher parser | `publisher/{dominio}/` | `*Parser`, `*PublisherParse` | Object → JSON (outbound) | Inbound deserialization |
-| SQS sender | `sender/{dominio}/` | `*Sender` | `SqsClient.sendMessage` | Business logic |
+| REST endpoint | `api/{domain}/controller` | `*Controller` | Delegate to service; use `ApiConstants` for paths | Business logic; RBAC in controller |
+| API service | `api/{domain}/service` | `*Service` | Orchestrate validation, persistence, publisher, audit | Direct HTTP concerns |
+| Request validator | `api/{domain}/service` | `*RequestValidator` | Spring `Validator` + `@InitBinder` | Persistence calls |
+| Data validator | `api/{domain}/service` | `*DataValidator` | Post-mapping business rules | HTTP binding |
+| DTO builder | `api/{domain}/service` | `*Builder` | Request ↔ DTO ↔ Entity ↔ Response | Side effects |
+| API DTO | `api/{domain}/model` | `*Request`, `*Response`, `*Dto` | Lombok POJOs | JPA annotations |
+| API exception | `api/{domain}/exception` | `*ApiException`, `*ApiError` | Typed errors | Generic RuntimeException |
+| Exception handler | `api/{domain}/exception` | `*ExceptionHandler` | Extend `BaseExceptionHandler` | Catch-all without domain scope |
+| SQS listener | `cache/{domain}/` | `*Listener`, `*CacheListener` | `@SqsListener`, MDC, route by event | Business logic (delegate to handler) |
+| SQS parser (inbound) | `cache/{domain}/` | `*Parser`, `*CacheParser` | JSON → object | Persistence writes |
+| Cache builder | `cache/{domain}/` | `*Builder`, `*CacheBuilder` | Payload → DTO → entity | Repository calls |
+| Cache handler | `cache/{domain}/` | `*Handler`, `*CacheHandler` | CRUD via repository; optimistic locking | HTTP or SNS publish orchestration |
+| JPA entity | `persistence/aurora/{domain}/model` | entity name | `@Entity`, domain methods | Import from `api` or `cache` |
+| JPA repository | `persistence/aurora/{domain}/repository` | `*Repository` | `extends JpaRepository` | Import from `api` or `cache` |
+| Dynamo entity | `persistence/dynamo/{domain}/model` | entity name | `@DynamoDBTable` | Import from `api` or `cache` |
+| Dynamo repository | `persistence/dynamo/{domain}/repository` | `*Repository`, `*RepositoryImpl` | Interface + `@Service` impl | Import from `api` or `cache` |
+| SNS publisher | `publisher/{domain}/` | `*Publisher` | Build + serialize + publish with retry | Business orchestration |
+| Publisher builder | `publisher/{domain}/` | `*Builder`, `*PayloadBuilder` | Entity → messaging payload | Repository queries |
+| Publisher parser | `publisher/{domain}/` | `*Parser`, `*PublisherParse` | Object → JSON (outbound) | Inbound deserialization |
+| SQS sender | `sender/{domain}/` | `*Sender` | `SqsClient.sendMessage` | Business logic |
 | Spring config | `configuration/cloud` or `local/` | `*Config` | `@Bean` factory, `@Profile`, `@Value` keys declared in `application.properties` and `run.sh` when deploy overrides | Business logic; hardcoded ARNs/queue names |
 | Audit helper | `audit/` | `{Domain}AuditHelper` | Extend `BaseAudit` | Direct controller calls |
-| Shared helper | `helper/{dominio}/` | `{Domain}Helper` | Cross-domain orchestration | HTTP adapters |
+| Shared helper | `helper/{domain}/` | `{Domain}Helper` | Cross-domain orchestration | HTTP adapters |
 | Transaction listener | `transaction/` | `TransactionListener` | Dispatch by subType | Domain-specific API logic |
 | Transaction handler | `transaction/handler/` | `*TransactionHandler` | Extend `TransactionHandlerBase` | REST endpoints |
 

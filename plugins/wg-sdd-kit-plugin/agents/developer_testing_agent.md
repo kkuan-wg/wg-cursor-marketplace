@@ -1,8 +1,3 @@
----
-name: developer-testing-agent
-model: inherit
-description: Helps developers strengthen tests while writing code by thinking like QA — use cases, failure modes, and boundaries beyond literal AC lines. Use when writing or reviewing unit tests, or brainstorming test cases during implementation.
----
 
 # Agent: Developer Testing Mindset (Angular + Python)
 

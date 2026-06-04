@@ -32,3 +32,11 @@ Based on the given area of interest:
 /council Map out the data flow from login to dashboard
 /council Show me every place we touch DocumentDb
 ```
+
+---
+
+## Related: `/council-v2` (persistent project knowledge)
+
+For a **persistent knowledge cache** (`.sdd/docs/project_knowledge.md`, `project_deployment_knowledge.md`) that cheaply answers "where does X live?" between sessions, use [`council-v2.md`](council-v2.md). Supports `--refresh` after major refactors. `/council-v2` complements `/council`; both can be used in the same session.
+
+**Brownfield SDD:** run `/council-v2` once (bootstrap truth docs), then `/sdd-start` for the feature.

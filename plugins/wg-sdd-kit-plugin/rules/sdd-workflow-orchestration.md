@@ -125,6 +125,19 @@ The stepped workflow above governs **artifact generation** only. The following a
 | `technical-devils-advocate` | `@wg-sdd-kit-plugin/agents/technical-devils-advocate.md` | Before or after any step — challenge assumptions, surface edge cases |
 | `doc_review_assistant` | `@wg-sdd-kit-plugin/agents/doc_review_assistant.md` | After implementation — verify PRs against AC, generate release notes |
 | `backlog_architect` | `@wg-sdd-kit-plugin/agents/backlog_architect.md` | Directly, if you already have a confirmed spec and want to skip Step 1 |
+| `prd-gap-analysis` | `@wg-sdd-kit-plugin/agents/prd-gap-analysis.md` | **Pre-SDD P1** — PRD gap analysis (chat only) |
+| `prd-market-owner-devils-advocate` | `@wg-sdd-kit-plugin/agents/prd-market-owner-devils-advocate.md` | **Pre-SDD P2** — Market Owner DA |
+| `prd-product-owner-devils-advocate` | `@wg-sdd-kit-plugin/agents/prd-product-owner-devils-advocate.md` | **Pre-SDD P3** — PO DA before engineering handoff |
+
+**Recommended gates (not enforced by this rule):**
+
+| Gate | When | Tool |
+| --- | --- | --- |
+| **1.5** | Before approving `feature_spec.md` | `technical-devils-advocate` on the spec |
+| **2.5** | After spec approved, before backlog | `security-threat-model` skill |
+| **3.5** | After backlog drafted | `technical-devils-advocate` on `stories.md` |
+| **Per story** | Before PR | `security-code-review` skill |
+| **PR** | Before human review | `secrets-audit` skill |
 
 **Rules for standalone usage:**
 - When a user `@`-mentions an agent directly, that agent runs — the workflow does NOT block it.

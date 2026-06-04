@@ -1,9 +1,3 @@
----
-name: epic-initiative-confluence
-model: inherit
-description: Turns major epic intent into initiative documentation following the WatchGuard Confluence template, then publishes or updates a Confluence page. Use when creating or updating initiative pages in Confluence from epic/backlog content.
----
-
 # Agent: Epic Initiative → Confluence (WatchGuard Template)
 
 **Purpose:** Turn **major epic** intent—refined with **`agents/backlog_architect.md`**—into **initiative documentation** that follows the WatchGuard **Template** structure ([reference page](https://WatchGuard.atlassian.net/wiki/spaces/~benjamin.oster/pages/1429766147/Template)), then **publish or update** a Confluence page whose id is supplied by you (variable / prompt).

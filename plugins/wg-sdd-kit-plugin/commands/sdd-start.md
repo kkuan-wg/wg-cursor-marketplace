@@ -39,7 +39,7 @@ All artifacts go to `output/{project-name}/` in the current workspace.
 
 - **Skip steps:** Tell the agent explicitly, e.g. "skip to plan", "generate everything at once".
 - **Standalone agents:** You can `@`-mention any SDD agent at any time without advancing the workflow. See `@wg-sdd-kit-plugin/rules/sdd-workflow-orchestration.md` for the full list.
-- **Brownfield:** Run `/council` first to explore the existing codebase, then `/sdd-start` with the context gathered.
+- **Brownfield:** Run `/council-v2` once to bootstrap `.sdd/docs/` truth docs (or `/council` for a one-shot deep dive), then `/sdd-start` with that context.
 
 ## When NOT to use this
 

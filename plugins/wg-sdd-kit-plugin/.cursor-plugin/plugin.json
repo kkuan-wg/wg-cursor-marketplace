@@ -2,8 +2,8 @@
   "name": "wg-sdd-kit-plugin",
   "displayName": "WG SDD Kit Plugin",
   "logo": "assets/sample_logo.png",
-  "description": "Spec-Driven Development (SDD) plugin: gated workflow (feature spec -> backlog -> plan -> publish), agents for analysis/QA/docs, templates, and Jira/Confluence automation. Stack-agnostic — pair with a stack plugin (e.g. authpoint-cloud-plugin) for coding conventions.",
-  "version": "1.0.1",
+  "description": "Specs-Driven Development (SDD) plugin: Pre-SDD PRD agents, gated workflow (feature spec -> backlog -> plan -> publish), security skills (threat model, code review, secrets audit), /council + /council-v2 truth docs, agents for analysis/QA/docs, templates, and Jira/Confluence automation. Stack-agnostic — pair with a stack plugin (e.g. authpoint-cloud-plugin) for coding conventions.",
+  "version": "1.1.0",
   "author": {
     "name": "WGC Platform"
   },
@@ -31,6 +31,11 @@
     "feasibility",
     "devils-advocate",
     "release-notes",
-    "workflow-orchestration"
+    "workflow-orchestration",
+    "prd",
+    "threat-model",
+    "security",
+    "secrets-audit",
+    "council-v2"
   ]
 }

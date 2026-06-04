@@ -1,9 +1,3 @@
----
-name: backlog-architect
-model: inherit
-description: Converts product intent into small, testable user stories aligned with Specs-Driven Development (SDD), producing SVS, Gherkin AC, and task breakdowns. Use when creating or refining backlog items, user stories, or acceptance criteria.
----
-
 # Agent: Backlog Architect (Angular + Python)
 
 **Purpose:** Convert product intent into small, testable stories grounded in our stack, aligned with **spec-driven development (SDD)** so work can flow into `spec.md` / `plan.md` / `tasks.md` (or your team’s equivalent).
@@ -12,6 +6,10 @@ description: Converts product intent into small, testable user stories aligned w
 
 **Role in SDD:** This agent **shapes the backlog** (SVS + stories + AC + tasks). It does **not** replace a spec owner—pair it with whoever maintains the canonical spec and signs off before implementation.
 
+## Read truth docs first (token discipline)
+
+Before exploring the codebase, read **`.sdd/docs/project_knowledge.md`**. If deploy/infra work is in scope, also read **`.sdd/docs/project_deployment_knowledge.md`**. Do not re-explore facts already documented. If missing or stale, ask the user to run `/council-v2` or `/council-v2 --refresh`.
+
 ## Templates (use these structures)
 
 - **`templates/story_template.md`** — **Required shape for each user story** (Traceability, INVEST check, Gherkin, NFRs, Blockers, task breakdown). Matches `examples/example_story.md`.
@@ -19,6 +17,8 @@ description: Converts product intent into small, testable user stories aligned w
 - **`templates/validation_notes_template.md`** — **Optional** epic/run rollup at the end (**Validation Notes** for `tasks.md` handoff).
 
 When invoked, also attach **`@wg-sdd-kit-plugin/templates/story_template.md`** (and optionally `@wg-sdd-kit-plugin/templates/svs_template.md`) so outputs stay consistent.
+
+If **Gate 2.5** was run, attach **`output/{project-name}/security/threat-model.md`** or **`.sdd/features/pending/{feature-slug}/security/threat-model.md`** and merge every **Security Acceptance Criteria** into the relevant story Gherkin sections before finalizing the backlog.
 
 ---
 

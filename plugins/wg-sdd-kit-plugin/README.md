@@ -1,8 +1,8 @@
-# sdd-plugin
+# WG SDD Kit Plugin
 
 > **Specs-Driven Development (SDD) for Cursor** — a gated workflow that forces specs and backlog to be agreed *before* code is written. Stack-agnostic.
 
-Derived from the [`python-sdd-starter-kit`](../python-sdd-starter-kit/) and repackaged as a **Cursor plugin** so teams can install it once, get updates centrally, and stop maintaining N forks of `.cursor/` across repos.
+Canonical source: [`wgc-ai-common-guidelines/cursor/sdd-plugin`](https://github.infra.int.daas-watchguard.com/Platform/wgc-ai-common-guidelines/tree/master/cursor/sdd-plugin). Repackaged here as a **Cursor marketplace plugin** so teams install once and get updates centrally.
 
 ---
 
@@ -50,7 +50,7 @@ sdd-plugin/
 Copy this directory to `~/.cursor/plugins/local/wg-sdd-kit-plugin/`:
 
 ```bash
-cp -r cursor/sdd-plugin ~/.cursor/plugins/local/wg-sdd-kit-plugin
+cp -r plugins/wg-sdd-kit-plugin ~/.cursor/plugins/local/wg-sdd-kit-plugin
 ```
 
 Cursor will auto-discover it on next restart. Verify with **Cursor Settings -> Plugins**.
